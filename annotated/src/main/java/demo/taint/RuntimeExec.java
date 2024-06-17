@@ -1,6 +1,5 @@
 package demo.taint;
 
-import edu.ucr.cs.riple.taint.ucrtainting.qual.RUntainted;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,23 +14,23 @@ public class RuntimeExec {
   private static final String DIRECTIVE_SPLIT = "SPLIT:";
   private static final Map<String, String> defaultProperties = new HashMap<>();
 
-  private @RUntainted String[] processProperties;
-  private @RUntainted File processDirectory;
-  private @RUntainted String[] command;
+  private String[] processProperties;
+  private File processDirectory;
+  private String[] command;
 
-  public void setCommand(@RUntainted String[] command) {
+  public void setCommand(String[] command) {
     this.command = command;
   }
 
-  public void setProcessDirectory(@RUntainted File processDirectory) {
+  public void setProcessDirectory(File processDirectory) {
     this.processDirectory = processDirectory;
   }
 
-  public void setProcessProperties(@RUntainted String[] processProperties) {
+  public void setProcessProperties(String[] processProperties) {
     this.processProperties = processProperties;
   }
 
-  public @RUntainted String[] getCommand(Map<String, String> properties) {
+  public String[] getCommand(Map<String, String> properties) {
     Map<String, String> execProperties = null;
     if (properties == defaultProperties) {
       // we are just using the default properties
@@ -42,7 +41,7 @@ public class RuntimeExec {
       execProperties.putAll(properties);
     }
     // Perform the substitution for each element of the command
-    ArrayList<@RUntainted String> adjustedCommandElements = new ArrayList<@RUntainted String>(20);
+    ArrayList<String> adjustedCommandElements = new ArrayList<String>(20);
     for (int i = 0; i < command.length; i++) {
       StringBuilder sb = new StringBuilder(command[i]);
       for (Map.Entry<String, String> entry : execProperties.entrySet()) {
@@ -70,7 +69,7 @@ public class RuntimeExec {
         // There may be quoted arguments here (see ALF-7482)
         ExecParameterTokenizer quoteAwareTokenizer =
             new ExecParameterTokenizer(unsplitAdjustedValue);
-        List<@RUntainted String> tokens = quoteAwareTokenizer.getAllTokens();
+        List<String> tokens = quoteAwareTokenizer.getAllTokens();
         adjustedCommandElements.addAll(tokens);
       } else {
         adjustedCommandElements.add(adjustedValue);
@@ -87,7 +86,7 @@ public class RuntimeExec {
     }
     // create the properties
     Runtime runtime = Runtime.getRuntime();
-    @RUntainted String[] commandToExecute;
+    String[] commandToExecute;
     try {
       // execute the command with full property replacement
       commandToExecute = getCommand(properties);

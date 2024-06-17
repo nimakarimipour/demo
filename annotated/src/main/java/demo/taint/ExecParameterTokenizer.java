@@ -1,17 +1,16 @@
 package demo.taint;
 
-import edu.ucr.cs.riple.taint.ucrtainting.qual.RUntainted;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
 public class ExecParameterTokenizer {
-  private final @RUntainted String str;
+  private final String str;
 
   /** The list of tokens, which will take account of quoted sections. */
-  private List<@RUntainted String> tokens;
+  private List<String> tokens;
 
-  public ExecParameterTokenizer(@RUntainted String str) {
+  public ExecParameterTokenizer(String str) {
     this.str = str;
   }
 
@@ -25,7 +24,7 @@ public class ExecParameterTokenizer {
    *
    * @throws NullPointerException if the string to be tokenized was null.
    */
-  public List<@RUntainted String> getAllTokens() {
+  public List<String> getAllTokens() {
     if (this.str == null) {
       throw new NullPointerException("Illegal null string cannot be tokenized.");
     }
@@ -41,9 +40,8 @@ public class ExecParameterTokenizer {
       } else {
         // There are either single or double quotes or both.
         // So we need to identify the quoted regions within the string.
-        List<Pair<@RUntainted Integer, @RUntainted Integer>> quotedRegions = new ArrayList<>();
-        for (Pair<@RUntainted Integer, @RUntainted Integer> next = identifyNextQuotedRegion(str, 0);
-            next != null; ) {
+        List<Pair<Integer, Integer>> quotedRegions = new ArrayList<>();
+        for (Pair<Integer, Integer> next = identifyNextQuotedRegion(str, 0); next != null; ) {
           quotedRegions.add(next);
           next = identifyNextQuotedRegion(str, next.getSecond() + 1);
         }
@@ -64,11 +62,10 @@ public class ExecParameterTokenizer {
    * quotes stripped off.
    */
   private List<Substring> getSubstrings(
-      @RUntainted String str,
-      List<Pair<@RUntainted Integer, @RUntainted Integer>> quotedRegionIndices) {
+      String str, List<Pair<Integer, Integer>> quotedRegionIndices) {
     List<Substring> result = new ArrayList<>();
     int cursorPosition = 0;
-    for (Pair<@RUntainted Integer, @RUntainted Integer> __ : quotedRegionIndices) {
+    for (Pair<Integer, Integer> __ : quotedRegionIndices) {
       // ....
     }
     if (cursorPosition < str.length() - 1) {
@@ -77,8 +74,7 @@ public class ExecParameterTokenizer {
     return result;
   }
 
-  private Pair<@RUntainted Integer, @RUntainted Integer> identifyNextQuotedRegion(
-      @RUntainted String str, @RUntainted int startingIndex) {
+  private Pair<Integer, Integer> identifyNextQuotedRegion(String str, int startingIndex) {
     int indexOfNextSingleQuote = str.indexOf('\'', startingIndex);
     int indexOfNextDoubleQuote = str.indexOf('"', startingIndex);
     // ....
@@ -87,8 +83,8 @@ public class ExecParameterTokenizer {
     return findIndexOfClosingQuote(str, indexOfNextQuote, quoteChar);
   }
 
-  private Pair<@RUntainted Integer, @RUntainted Integer> findIndexOfClosingQuote(
-      @RUntainted String str, @RUntainted int indexOfStartingQuote, @RUntainted char quoteChar) {
+  private Pair<Integer, Integer> findIndexOfClosingQuote(
+      String str, int indexOfStartingQuote, char quoteChar) {
     // So we know which type of quote char we're dealing with. Either ' or ".
     // Now we need to find the closing quote.
     int indexAfterClosingQuote = str.indexOf(quoteChar, indexOfStartingQuote + 1) + 1;
@@ -96,6 +92,6 @@ public class ExecParameterTokenizer {
   }
 
   public interface Substring {
-    List<@RUntainted String> getTokens();
+    List<String> getTokens();
   }
 }
