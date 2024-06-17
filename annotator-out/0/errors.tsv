@@ -1,0 +1,2 @@
+message_type	message	enc_class	enc_member	offset	path	target_kind	target_class	target_method	target_param	target_index	target_path
+FIELD_NO_INIT	@NonNull field field not initialized	demo.nullaway.Main	field	47	/Users/nima/Desktop/Demo/src/main/java/demo/nullaway/Main.java	FIELD	demo.nullaway.Main	null	field	null	/Users/nima/Desktop/Demo/src/main/java/demo/nullaway/Main.java

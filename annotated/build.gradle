@@ -1,0 +1,76 @@
+plugins {
+    id 'java'
+    id 'com.github.sherter.google-java-format' version '0.9'
+    id 'org.checkerframework' version '0.6.37'
+    id 'net.ltgt.errorprone' version "4.0.0"
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    errorprone "edu.ucr.cs.riple.annotator:annotator-scanner:1.3.14"
+    compileOnly "com.google.code.findbugs:jsr305:3.0.2"
+    errorprone "com.google.errorprone:error_prone_core:2.28.0"
+    errorproneJavac "com.google.errorprone:javac:9+181-r4173-1"
+    annotationProcessor "com.uber.nullaway:nullaway:0.10.20"
+    // UCR Tainting checker
+    annotationProcessor "edu.ucr.cs.riple.taint:ucrtainting-checker:0.3-SNAPSHOT"
+    compileOnly "edu.ucr.cs.riple.taint:ucrtainting-checker-qual:0.3-SNAPSHOT"
+
+    // To add sanitizers
+    implementation 'org.apache.commons:commons-lang3:3.14.0'
+    // to add sources
+    compileOnly 'javax.servlet:servlet-api:2.5'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// Annotator scripts
+def checker_config = project.rootDir.toString() + "/annotator-out/checker.xml"
+def nullaway_config = project.rootDir.toString() + "/annotator-out/nullaway.xml"
+def scanner_config = project.rootDir.toString() + "/annotator-out/scanner.xml"
+checkerFramework {
+    checkers = [
+            'edu.ucr.cs.riple.taint.ucrtainting.UCRTaintingChecker',
+    ]
+
+    extraJavacArgs = [
+            '-AannotatedPackages=' + 'demo.taint',
+            "-AenableLibraryCheck=true",
+            "-AenablePolyTaintInference=true",
+            "-AenableTypeArgumentInference=true",
+            "-AenableSerialization",
+            "-AserializationConfigPath=" + checker_config,
+    ]
+}
+
+import net.ltgt.gradle.errorprone.CheckSeverity
+
+tasks.withType(JavaCompile) {
+    if (!name.toLowerCase().contains("test")) {
+        options.errorprone.disableAllChecks = true
+        options.errorprone {
+            check("NullAway", CheckSeverity.OFF)
+            check("AnnotatorScanner", CheckSeverity.WARN)
+            option("NullAway:AnnotatedPackages", "demo.nullaway")
+            option("NullAway:SerializeFixMetadata", "true")
+            option("NullAway:FixSerializationConfigPath", nullaway_config)
+            option("AnnotatorScanner:ConfigPath", scanner_config)
+        }
+    }
+    options.compilerArgs << "-Xmaxerrs" << "100000"
+    options.compilerArgs << "-Xmaxwarns" << "100000"
+    options.compilerArgs += '-nowarn'
+    options.fork = true
+}

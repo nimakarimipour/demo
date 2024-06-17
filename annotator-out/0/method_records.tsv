@@ -1,0 +1,6 @@
+id	class	method	parent	flags	annotations	visibility	non-primitive-return	path
+1	demo.taint.RuntimeExec	setCommand(java.lang.String[])	0	[false]		public	false	/Users/nima/Desktop/Demo/unannotated/src/main/java/demo/taint/RuntimeExec.java
+2	demo.taint.RuntimeExec	setProcessDirectory(java.io.File)	0	[false]		public	false	/Users/nima/Desktop/Demo/unannotated/src/main/java/demo/taint/RuntimeExec.java
+3	demo.taint.RuntimeExec	setProcessProperties(java.lang.String[])	0	[false]		public	false	/Users/nima/Desktop/Demo/unannotated/src/main/java/demo/taint/RuntimeExec.java
+4	demo.taint.RuntimeExec	getCommand(java.util.Map)	0	[false]		public	true	/Users/nima/Desktop/Demo/unannotated/src/main/java/demo/taint/RuntimeExec.java
+5	demo.taint.RuntimeExec	execute(java.util.Map)	0	[false]		public	true	/Users/nima/Desktop/Demo/unannotated/src/main/java/demo/taint/RuntimeExec.java
