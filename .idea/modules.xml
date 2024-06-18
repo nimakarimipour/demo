@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/annotated/Demo.annotated.main.iml" filepath="$PROJECT_DIR$/.idea/modules/annotated/Demo.annotated.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/example/Demo.example.main.iml" filepath="$PROJECT_DIR$/.idea/modules/example/Demo.example.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/unannotated/Demo.unannotated.main.iml" filepath="$PROJECT_DIR$/.idea/modules/unannotated/Demo.unannotated.main.iml" />
     </modules>
   </component>

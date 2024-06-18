@@ -5,36 +5,42 @@ import static edu.ucr.cs.riple.Sanitizer.sanitize;
 import edu.ucr.cs.riple.taint.ucrtainting.qual.RUntainted;
 import java.io.File;
 
-public class Executor {
+public class Builder {
 
   RuntimeExec runtimeExec = new RuntimeExec();
 
-  public void setCommand(@RUntainted String[] command) {
+  public Builder setCommand(@RUntainted String[] command) {
     this.runtimeExec.setCommand(command);
+    return this;
   }
 
-  public void setProcessDirectory(@RUntainted File processDirectory) {
+  public Builder setProcessDirectory(@RUntainted File processDirectory) {
     this.runtimeExec.setProcessDirectory(processDirectory);
+    return this;
   }
 
-  public void setProcessProperties(@RUntainted String[] processProperties) {
+  public Builder setProcessProperties(@RUntainted String[] processProperties) {
     this.runtimeExec.setProcessProperties(processProperties);
+    return this;
   }
 }
 
-class ProtectedExecutor {
+class ProtectedBuilder {
 
   RuntimeExec runtimeExec = new RuntimeExec();
 
-  public void setCommand(String[] command) {
+  public ProtectedBuilder setCommand(String[] command) {
     runtimeExec.setCommand(sanitize(command));
+    return this;
   }
 
-  public void setProcessDirectory(File processDirectory) {
+  public ProtectedBuilder setProcessDirectory(File processDirectory) {
     runtimeExec.setProcessDirectory(sanitize(processDirectory));
+    return this;
   }
 
-  public void setProcessProperties(String[] processProperties) {
+  public ProtectedBuilder setProcessProperties(String[] processProperties) {
     runtimeExec.setProcessProperties(sanitize(processProperties));
+    return this;
   }
 }
