@@ -1,4 +1,4 @@
 rootProject.name = 'Demo'
 include 'annotated'
 include 'unannotated'
-
+include 'example'
