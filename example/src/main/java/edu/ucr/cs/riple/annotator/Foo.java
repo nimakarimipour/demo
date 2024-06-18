@@ -30,4 +30,10 @@ public class Foo {
             throw new RuntimeException(e);
         }
     }
+
+    public void test(HttpServletRequest request) {
+      Foo foo = new Foo();
+      foo.bar(request);
+      foo.exec();
+    }
 }
